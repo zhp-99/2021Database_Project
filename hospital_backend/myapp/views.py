@@ -4,15 +4,8 @@ from django.shortcuts import render
 from . import models
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.tokens import default_token_generator
-import json
-import requests
-import json
-from django.core.mail import send_mail
-from django.conf import settings
-import re
-import random
-import json
+from django.utils import timezone
+from django.forms.models import model_to_dict
 import dateutil.parser
 
 @csrf_exempt
@@ -48,7 +41,7 @@ def patient_register(request):
         res['retCode'] = 0
         res['message'] = '用户名已注册'
 
-    return JsonResponse({'register': res})
+    return JsonResponse(res)
 
 @csrf_exempt
 def docter_register(request):
@@ -85,7 +78,7 @@ def docter_register(request):
         res['retCode'] = 0
         res['message'] = '用户名已注册'
 
-    return JsonResponse({'register': res})
+    return JsonResponse(res)
 
 @csrf_exempt
 def login(request):
@@ -129,7 +122,7 @@ def login(request):
                 print("密码错误")
 
 
-    return JsonResponse({'login': res})
+    return JsonResponse(res)
 
 
 @csrf_exempt
@@ -153,7 +146,7 @@ def patient_info(request):
         res['phoneNumber'] = obj.phoneNumber
         print('查询成功')
 
-    return JsonResponse({'info': res})
+    return JsonResponse(res)
 
 @csrf_exempt
 def doctor_info(request):
@@ -178,7 +171,144 @@ def doctor_info(request):
         res['degree'] = obj.degree
         print('查询成功')
 
-    return JsonResponse({'info': res})
+    return JsonResponse(res)
+
+
+@csrf_exempt
+def modify_patient(request):
+    userName = request.POST.get('userName')
+    password = request.POST.get('password')
+    email = request.POST.get('email')
+    phoneNumber = request.POST.get('phoneNumber')
+
+    obj = models.Patient.objects.get(userName=userName)
+    if password is not None:
+        obj.password = password
+    if email is not None:
+        obj.email = email
+    if phoneNumber is not None:
+        obj.phoneNumber = phoneNumber
+
+    obj.save()
+
+    res = {'retCode': 1, 'message': '修改成功'}
+    return JsonResponse(res)
+
+@csrf_exempt
+def make_appointment(request):
+    patient_name = request.POST.get('pName')
+    doctor_name = request.POST.get('dName')
+    date = dateutil.parser.parse(request.POST.get('date'))
+
+    res = {'retCode': -1, 'message': ''}
+    #这里不知道写timezone.now()行不行，有问题之后再改
+    doc_today_apps = models.Appointment.objects.filter(dName=doctor_name,date=timezone.now())
+    if doc_today_apps.count()>30:
+        res = {'retCode': 0, 'message': '预约失败'}
+        return JsonResponse(res)
+    else:
+        obj = models.Appointment.objects.create(pName=patient_name,dName=doctor_name,date=date)
+        obj.save()
+        res = {'retCode': 1, 'message': '预约成功'}
+        return JsonResponse(res)
+
+@csrf_exempt
+def doctor_appointments(request):
+    userName = request.POST.get('userName')
+    app_list = models.Appointment.objects.filter(dName=userName)
+    res_list = []
+    for app in app_list:
+        app_dict = model_to_dict(app)
+        dName = app.dName
+        pName = app.pName
+        app_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        app_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        res_list.append(app_dict)
+    res = {'retCode': 1}
+    res['appList'] = res_list
+    return JsonResponse(res)
+
+@csrf_exempt
+def doctor_appointments_by_date(request):
+    userName = request.POST.get('userName')
+    date = request.POST.get('date')
+    app_list = models.Appointment.objects.filter(dName=userName,date=date)
+    res_list = []
+    for app in app_list:
+        app_dict = model_to_dict(app)
+        dName = app.dName
+        pName = app.pName
+        app_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        app_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        res_list.append(app_dict)
+    res = {'retCode': 1}
+    res['appList'] = res_list
+    return JsonResponse(res)
+
+@csrf_exempt
+def patient_appointments(request):
+    userName = request.POST.get('userName')
+    app_list = models.Appointment.objects.filter(pName=userName)
+    res_list = []
+    for app in app_list:
+        app_dict = model_to_dict(app)
+        dName = app.dName
+        pName = app.pName
+        app_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        app_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        res_list.append(app_dict)
+    res = {'retCode': 1}
+    res['appList'] = res_list
+    return JsonResponse(res)
+
+@csrf_exempt
+def patient_appointments_by_date(request):
+    userName = request.POST.get('userName')
+    date = request.POST.get('date')
+    app_list = models.Appointment.objects.filter(pName=userName,date=date)
+    res_list = []
+    for app in app_list:
+        app_dict = model_to_dict(app)
+        dName = app.dName
+        pName = app.pName
+        app_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        app_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        res_list.append(app_dict)
+    res = {'retCode': 1}
+    res['appList'] = res_list
+    return JsonResponse(res)
+
+
+@csrf_exempt
+def make_mr(request):
+    pName = request.POST.get('pName')
+    dName = request.POST.get('dName')
+    date = dateutil.parser.parse(request.POST.get('date'))
+    medical = request.POST.get('medical')
+
+    prescription = models.Prescription.objects.create(pName=pName,dName=dName,date=date,medical=medical)
+    prescription.save()
+    mr = models.MedicalRecord.objects.create(pName=pName,dName=dName,date=date,prescription=prescription)
+    mr.save()
+    res = {'retCode': 1, 'message': '预约成功'}
+    return JsonResponse(res)
+
+@csrf_exempt
+def patient_mrs(request):
+    userName = request.POST.get('userName')
+    mr_list = list(models.MedicalRecord.objects.filter(pName=userName).values())
+    res = {'retCode': 1}
+    res['mrList'] = mr_list
+    return JsonResponse(res)
+
+@csrf_exempt
+def patient_mrs_by_date(request):
+    userName = request.POST.get('userName')
+    date = request.POST.get('date')
+    mr_list = list(models.MedicalRecord.objects.filter(pName=userName,date=date).values())
+    res = {'retCode': 1}
+    res['mrList'] = mr_list
+    return JsonResponse(res)
 
 
 

@@ -32,10 +32,23 @@ class Doctor(models.Model):
     college = models.CharField(max_length=32, default='Peking')
     degree = models.CharField(max_length=32, default='Peking')
 
-#科室类
-class Office(models.Model):
-    description = models.CharField(max_length=100)
+#预约表
+class Appointment(models.Model):
+    pName = models.CharField(max_length=32)
+    dName = models.CharField(max_length=32)
+    date = models.DateField()
 
-class Doc_Office(models.Model):
-    doc_id = models.IntegerField()
-    off_id = models.IntegerField()
+#处方表
+class Prescription(models.Model):
+    pName = models.CharField(max_length=32)
+    dName = models.CharField(max_length=32)
+    date = models.DateField()
+    medical = models.CharField(max_length=32)
+
+#病历表，一个病历代表一次治疗，一次治疗会有一个处方,查询能通过病历的外码找到相应处方
+class MedicalRecord(models.Model):
+    pName = models.CharField(max_length=32)
+    dName = models.CharField(max_length=32)
+    date = models.DateField()
+    prescription = models.ForeignKey('Prescription', on_delete=models.CASCADE)
+
