@@ -4,9 +4,13 @@ api文档，前后端交互用
 
 患者注册url
 http://localhost:8000/myapp/patient/register
+患者信息
+http://localhost:8000/myapp/patient/info
 
 医生注册url
 http://localhost:8000/myapp/doctor/register
+医生信息
+http://localhost:8000/myapp/doctor/info
 
 登录url（传一个type代表医生登录还是患者登录）
 http://localhost:8000/myapp/login

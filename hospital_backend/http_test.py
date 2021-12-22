@@ -1,6 +1,6 @@
 import requests
 
-url = 'http://localhost:8000/myapp/login'
+url = 'http://localhost:8000/myapp/doctor/info'
 regist_data = {
     'userName':'zhp',
     'password':'123',
@@ -14,6 +14,9 @@ login_data = {
     'userName':'zhp',
     'password':'123',
     'type':'doctor'
+}
+info_data = {
+    'userName':'zhp'
 }
 r = requests.post(url,data=login_data)
 print(r.text)

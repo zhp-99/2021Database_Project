@@ -134,7 +134,54 @@ def login(request):
 
 @csrf_exempt
 def patient_info(request):
-    pass
+    userName = request.POST.get('userName', 'username')
+    obj = models.Patient.objects.filter(userName=userName)
+    res = {'retCode': -1, 'message': ''}
+    if obj.count() == 0:
+        res['retCode'] = 0
+        res['message'] = '用户不存在'
+        print('用户不存在')
+    else:
+        obj = models.Patient.objects.get(userName=userName)
+
+        res['retCode'] = 1
+        res['message'] = '查询成功'
+        res['userName'] = obj.userName
+        res['realName'] = obj.realName
+        res['gender'] = obj.gender
+        res['birthday'] = obj.birthday
+        res['phoneNumber'] = obj.phoneNumber
+        print('查询成功')
+
+    return JsonResponse({'info': res})
+
+@csrf_exempt
+def doctor_info(request):
+    userName = request.POST.get('userName', 'username')
+    obj = models.Doctor.objects.filter(userName=userName)
+    res = {'retCode': -1, 'message': ''}
+    if obj.count() == 0:
+        res['retCode'] = 0
+        res['message'] = '用户不存在'
+        print('用户不存在')
+    else:
+        obj = models.Doctor.objects.get(userName=userName)
+
+        res['retCode'] = 1
+        res['message'] = '查询成功'
+        res['userName'] = obj.userName
+        res['realName'] = obj.realName
+        res['gender'] = obj.gender
+        res['birthday'] = obj.birthday
+        res['phoneNumber'] = obj.phoneNumber
+        res['college'] = obj.college
+        res['degree'] = obj.degree
+        print('查询成功')
+
+    return JsonResponse({'info': res})
+
+
+
 
 
 
