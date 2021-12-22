@@ -1,0 +1,12 @@
+##############################################
+api文档，前后端交互用
+##############################################
+
+患者注册url
+http://localhost:8000/myapp/patient/register
+
+医生注册url
+http://localhost:8000/myapp/doctor/register
+
+登录url（传一个type代表医生登录还是患者登录）
+http://localhost:8000/myapp/login
