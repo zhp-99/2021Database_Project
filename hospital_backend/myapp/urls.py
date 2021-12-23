@@ -11,6 +11,7 @@ urlpatterns = [
     path('doctor/appointments',views.doctor_appointments),
     path('doctor/appointments/byDate',views.doctor_appointments_by_date),
     path('doctor/makeMR',views.make_mr),
+    path('doctor/modify',views.modify_doctor),
 
     path('patient/register', views.patient_register),
     path('patient/info',views.patient_info),
@@ -19,6 +20,7 @@ urlpatterns = [
     path('patient/appointments', views.patient_appointments),
     path('patient/appointments/byDate', views.patient_appointments_by_date),
     path('patient/mrs',views.patient_mrs),
-    path('patient/mrs/byDate',views.patient_mrs_by_date)
-    #path('patient/info',views.patient_info)
+    path('patient/mrs/byDate',views.patient_mrs_by_date),
+
+    path('office/register',views.office_register)
 ]

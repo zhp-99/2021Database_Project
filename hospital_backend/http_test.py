@@ -38,9 +38,9 @@ app_data = {
 #     }
 #     r = requests.post(url,data=regist_data)
 #     print(r.text)
-#
+
 # url = 'http://localhost:8000/myapp/doctor/register'
-# for i in range(5):
+# for i in range(2,3):
 #     regist_data = {
 #         'userName': 'd'+str(i),
 #         'password': '123',
@@ -48,7 +48,9 @@ app_data = {
 #         'phoneNumber': 'dp'+str(i),
 #         'idCardNumber': 'di'+str(i),
 #         'gender': '男',
-#         'birthday': '1999-11-12'
+#         'birthday': '1999-11-12',
+#         'leader':1,
+#         'office':'内科'
 #     }
 #     r = requests.post(url,data=regist_data)
 #     print(r.text)
@@ -63,12 +65,20 @@ app_data = {
 #     r = requests.post(url,data=regist_data)
 #     print(r.text)
 
-url = 'http://localhost:8000/myapp/doctor/appointments'
+url = 'http://localhost:8000/myapp/doctor/info'
 doc_app_data = {
     'userName':'d0'
 }
 r = requests.post(url,data=doc_app_data)
 print(r.text)
+
+# url = 'http://localhost:8000/myapp/patient/appointments/byDate'
+# doc_app_data = {
+#     'userName':'p0',
+#     'date':'2022-02-02'
+# }
+# r = requests.post(url,data=doc_app_data)
+# print(r.text)
 
 # url = 'http://localhost:8000/myapp/doctor/appointments/byDate'
 # doc_app_data = {
@@ -79,11 +89,26 @@ print(r.text)
 # print(r.text)
 
 # url = 'http://localhost:8000/myapp/doctor/makeMR'
-# mr_data = {
-#     'pName':'p0',
-#     'dName':'d0',
-#     'date':'2022-02-02',
-#     'medical':'dead'
+# for i in range(5):
+#     mr_data = {
+#         'pName':'p'+str(i),
+#         'dName':'d0',
+#         'date':'2022-02-02',
+#         'medical':'dead'
+#     }
+#     r = requests.post(url,data=mr_data)
+#     print(r.text)
+
+# url = 'http://localhost:8000/myapp/patient/mrs'
+# pat_mr_data = {
+#     'userName':'p0',
 # }
-# r = requests.post(url,data=mr_data)
+# r = requests.post(url,data=pat_mr_data)
+# print(r.text)
+
+# url = 'http://localhost:8000/myapp/office/register'
+# pat_mr_data = {
+#     'name':'外科'
+# }
+# r = requests.post(url,data=pat_mr_data)
 # print(r.text)
