@@ -17,6 +17,9 @@ class Patient(models.Model):
     idCardNumber = models.CharField(max_length=18,unique=True,default='x')
     phoneNumber = models.CharField(max_length=11,unique=True,default='x')
 
+    def __str__(self):
+        return self.realName
+
 
 # 医生类
 class Doctor(models.Model):

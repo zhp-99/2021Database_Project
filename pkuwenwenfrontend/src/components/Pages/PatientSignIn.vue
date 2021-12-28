@@ -59,6 +59,7 @@ export default {
             var post_request = new FormData()
             post_request.append('userName', this.param.username)
             post_request.append('password', this.param.password)
+            post_request.append('type', 'patient')
             //let _this = this;
             this.$http
             .request({
