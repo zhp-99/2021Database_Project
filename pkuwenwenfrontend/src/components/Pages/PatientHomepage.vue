@@ -8,7 +8,7 @@
   </div>
   <el-row>
     <el-col :span="12"><div class="grid-content bg-purple">{{realName}}</div></el-col>
-    <el-col :span="12"><div class="grid-content bg-purple-light">{{patientID}}</div></el-col>
+    <el-col :span="12"><div class="grid-content bg-purple-light">患者ID：{{patientID}}</div></el-col>
   </el-row>
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple">{{userName}}</div></el-col>
@@ -19,7 +19,7 @@
     <el-col :span="6"><div class="grid-content bg-purple-light">{{phoneNumber}}</div></el-col>
     <el-col :span="6"><div class="grid-content bg-purple">{{email}}</div></el-col>
     <el-col :span="6"><div class="grid-content bg-purple-light">{{birthday}}</div></el-col>
-    <el-col :span="6"><div class="grid-content bg-purple">{{appointmentNumber}}</div></el-col>
+    <el-col :span="6"><div class="grid-content bg-purple">当前预约数{{appointmentNumber}}</div></el-col>
   </el-row>
   <div class="">
     <el-table :data="OfficeList" style="width: 30%">
@@ -59,15 +59,28 @@ export default {
     }
   },
   mounted(){
+    var post_request = new FormData()
+    post_request.append('userName', localStorage.getItem('ms_username'))
     this.$http
     .request({
-      url: this.$url + '/getOfficeIndex',
-      method: 'get',
+      url: this.$url + '/patient/homepage/info',
+      method: 'post',
+      data: post_request,
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
     .then((response) =>{
       //console.log('get return data')
       console.log(response)
-      this.OfficeList = response.data.Officelist
+      this.realName = response.data.realName
+      this.patientID = response.data.patientID
+      this.userName = response.data.userName
+      this.gender = response.data.gender
+      this.idCardNumber = response.data.idCardNumber
+      this.phoneNumber = response.data.phoneNumber
+      this.email = response.data.email
+      this.birthday = response.data.birthday
+      this.appointmentNumber = response.data.appointmentNumber
+      this.OfficeList = response.data.OfficeList
     })
   },
 

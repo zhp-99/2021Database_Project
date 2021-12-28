@@ -3,6 +3,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # api directly for frontend-mounted
+    path('patient/homepage/info', views.patient_homepage_info),
+
+    # zhp api
     path('doctor/register',views.docter_register),
     path('doctor/info', views.doctor_info),
     path('doctor/appointments',views.doctor_appointments),
@@ -21,6 +25,7 @@ urlpatterns = [
 
     path('office/register',views.office_register),
 
+    # old api
     path('register', views.register),
     path('login', views.login),
     path('getOfficeIndex',views.getOfficeIndex),

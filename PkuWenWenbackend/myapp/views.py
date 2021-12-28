@@ -1,5 +1,7 @@
+from django.forms import model_to_dict
 from django.shortcuts import render
 from . import models
+from . import function
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.tokens import default_token_generator
@@ -178,6 +180,16 @@ def login(request):
                 print("密码错误")
 
     return JsonResponse({'login': res})
+
+
+@csrf_exempt
+def patient_homepage_info(request):
+    userName = request.POST.get('userName', 'username')
+    res = function.patient_info(userName)
+    res.update(function.get_office_index())
+    res.update(function.patient_appointment_count(userName))
+    return JsonResponse(res)
+
 
 
 @csrf_exempt
@@ -428,6 +440,7 @@ def office_register(request):
 
 @csrf_exempt
 def getOfficeIndex(request):
+    userName = request.POST.get('userName')
     retdata = {}
     offices = models.Office.objects.values()
     office_list = list(offices)
@@ -435,6 +448,7 @@ def getOfficeIndex(request):
     for office in office_list:
         doctor_num = len(models.Office.objects.raw('SELECT * FROM myapp_work WHERE office_name = %s', [office['name']]))
         res_list.append({'office_name': office['name'], 'doctor_num': doctor_num})
+    retdata['userName'] = userName
     retdata['Officelist'] = res_list
     return JsonResponse(retdata)
 

@@ -1,0 +1,55 @@
+from django.shortcuts import render
+from . import models
+from django.http import HttpResponse,JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.tokens import default_token_generator
+import json
+import requests
+import json
+from django.core.mail import send_mail
+from django.conf import settings
+import re
+import random
+import json
+import dateutil.parser
+
+def patient_info(userName):
+    obj = models.Patient.objects.filter(userName=userName)
+    res = {'retCode': -1, 'message': ''}
+    if obj.count() == 0:
+        res['retCode'] = 0
+        res['message'] = '用户不存在'
+        print('用户不存在')
+    else:
+        obj = models.Patient.objects.get(userName=userName)
+
+        res['retCode'] = 1
+        res['message'] = '查询成功'
+        res['userName'] = obj.userName
+        res['patientID'] = obj.id
+        res['realName'] = obj.realName
+        res['gender'] = obj.gender
+        res['idCardNumber'] = obj.idCardNumber
+        res['birthday'] = obj.birthday
+        res['phoneNumber'] = obj.phoneNumber
+        res['email'] = obj.email
+        print('查询成功')
+    return res
+
+
+def patient_appointment_count(userName):
+    app_list = models.Appointment.objects.filter(pName=userName)
+    res = {'appointmentNumber': len(app_list)}
+    return res
+
+
+def get_office_index():
+    retdata = {}
+    offices = models.Office.objects.values()
+    office_list = list(offices)
+    res_list = list()
+    for office in office_list:
+        doctor_num = len(models.Office.objects.raw('SELECT * FROM myapp_work WHERE office_name = %s', [office['name']]))
+        res_list.append({'office_name': office['name'], 'doctor_num': doctor_num})
+    retdata['OfficeList'] = res_list
+    return retdata
