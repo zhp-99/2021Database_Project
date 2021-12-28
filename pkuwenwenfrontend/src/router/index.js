@@ -33,6 +33,11 @@ const routes = [
         component: () => import('../components/Pages/PatientHomepage.vue')
     },
     {
+        path: '/:id/AppointmentDetail/',
+        name: 'AppointmentDetail',
+        component: () => import('../components/Pages/AppointmentDetail')
+    },
+    {
         path: '/:office/DoctorIndex', //使用动态链接，office是院系名
         name: 'DoctorIndex',
         component: () => import('../components/Pages/DoctorIndex.vue')

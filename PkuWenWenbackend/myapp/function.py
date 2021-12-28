@@ -1,3 +1,4 @@
+from django.forms import model_to_dict
 from django.shortcuts import render
 from . import models
 from django.http import HttpResponse,JsonResponse
@@ -53,3 +54,19 @@ def get_office_index():
         res_list.append({'office_name': office['name'], 'doctor_num': doctor_num})
     retdata['OfficeList'] = res_list
     return retdata
+
+
+def patient_appointments(userName):
+    app_list = models.Appointment.objects.filter(pName=userName)
+    res_list = []
+    for app in app_list:
+        app_dict = model_to_dict(app)
+        dName = app.dName
+        pName = app.pName
+        app_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        app_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        app_dict['date'] = str(app_dict['date'])
+        res_list.append(app_dict)
+    res = {'retCode': 1}
+    res['AppointmentList'] = res_list
+    return res

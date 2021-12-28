@@ -186,10 +186,10 @@ def login(request):
 def patient_homepage_info(request):
     userName = request.POST.get('userName', 'username')
     res = function.patient_info(userName)
-    res.update(function.get_office_index())
     res.update(function.patient_appointment_count(userName))
+    res.update(function.get_office_index())
+    res.update(function.patient_appointments(userName))
     return JsonResponse(res)
-
 
 
 @csrf_exempt

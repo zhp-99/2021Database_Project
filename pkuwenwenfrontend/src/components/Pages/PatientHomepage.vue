@@ -1,4 +1,4 @@
-<template>
+<template xmlns:el-col="http://www.w3.org/1999/html">
 <div>
   <div id = 'logoimg'>
   <img alt="Vue logo" src="../../assets/logo2.jpeg" height="106" width="256">
@@ -21,21 +21,38 @@
     <el-col :span="6"><div class="grid-content bg-purple-light">出生日期：{{birthday}}</div></el-col>
     <el-col :span="6"><div class="grid-content bg-purple">当前预约数：{{appointmentNumber}}</div></el-col>
   </el-row>
-  <div class="">
-    <el-table :data="OfficeList" style="width: 30%">
-      <el-table-column
-        fixed
-        prop="office_name"
-        label="全部科室"
-        width="250">
-        <template #default="scope">
-          <span class="message-title" @click="openOffice(scope.row.office_name)">
-            {{scope.row.office_name}}  {{scope.row.doctor_num}}
-          </span>
-        </template>
-      </el-table-column>
-    </el-table>
-  </div>
+  <el-row :gutter="20">
+    <el-col :span="6">
+      <el-table :data="OfficeList" style="width: 80%">
+        <el-table-column
+            fixed
+            prop="office_name"
+            label="全部科室"
+            width="250">
+          <template #default="scope">
+            <span class="message-title" @click="openOffice(scope.row.office_name)">
+              {{scope.row.office_name}}  {{scope.row.doctor_num}}
+            </span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+    <el-col :span="6">
+      <el-table :data="AppointmentList" style="width: 80%">
+        <el-table-column
+          fixed
+          prop="'appointment_list"
+          label="所有预约"
+          width="250">
+          <template #default="scope">
+            <span class="message-title" @click="openAppointment(scope.row.id)">
+              {{scope.row.dRealName}} {{scope.row.pRealName}} {{scope.row.date}}
+            </span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
 </div>
 </template>
 
@@ -47,6 +64,7 @@ export default {
       message: 'first',
       showHeader: false,
       OfficeList: Array(),
+      AppointmentList: Array(),
       realName: '真实姓名',
       patientID: '患者编号',
       userName: '登录名',
@@ -81,15 +99,22 @@ export default {
       this.birthday = response.data.birthday
       this.appointmentNumber = response.data.appointmentNumber
       this.OfficeList = response.data.OfficeList
+      this.AppointmentList = response.data.AppointmentList
     })
   },
 
   methods: {
     openOffice (officename) {
-       console.log(`dash: ${officename}`);
-       this.$router.push({
-         path: '/'+ officename + '/DoctorIndex',
-       })
+     console.log(`dash: ${officename}`);
+     this.$router.push({
+       path: '/'+ officename + '/DoctorIndex',
+     })
+    },
+    openAppointment (id) {
+      console.log(`dash: scan appointment id ${id}`);
+      this.$router.push({
+        path: '/' + id + '/AppointmentDetail',
+      })
     },
   },
 }
