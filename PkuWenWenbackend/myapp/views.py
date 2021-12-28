@@ -187,8 +187,17 @@ def patient_homepage_info(request):
     userName = request.POST.get('userName', 'username')
     res = function.patient_info(userName)
     res.update(function.patient_appointment_count(userName))
-    res.update(function.get_office_index())
     res.update(function.patient_appointments(userName))
+    res.update(function.get_office_index())
+    print(res)
+    return JsonResponse(res)
+
+
+@csrf_exempt
+def office_info(request):
+    res = {'retCode': -1, 'message': ''}
+    officeName = request.POST.get('officeName', 'officename')
+    res = function.get_doctor_index(officeName)
     return JsonResponse(res)
 
 

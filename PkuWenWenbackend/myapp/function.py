@@ -56,6 +56,15 @@ def get_office_index():
     return retdata
 
 
+def get_doctor_index(office):
+    doctor_list = models.Doctor.objects.filter(office=office)
+    res_list = []
+    for doc in doctor_list:
+        doc_dict = model_to_dict(doc)
+        res_list.append(doc_dict)
+    res = {'retCode': 1, 'DoctorList': res_list}
+
+
 def patient_appointments(userName):
     app_list = models.Appointment.objects.filter(pName=userName)
     res_list = []
@@ -67,6 +76,5 @@ def patient_appointments(userName):
         app_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
         app_dict['date'] = str(app_dict['date'])
         res_list.append(app_dict)
-    res = {'retCode': 1}
-    res['AppointmentList'] = res_list
+    res = {'retCode': 1, 'AppointmentList': res_list}
     return res

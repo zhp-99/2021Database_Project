@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     # api directly for frontend-mounted
     path('patient/homepage/info', views.patient_homepage_info),
-
+    path('office/info', views.office_info),
     # zhp api
     path('doctor/register',views.docter_register),
     path('doctor/info', views.doctor_info),

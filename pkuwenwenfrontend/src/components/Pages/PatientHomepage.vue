@@ -27,7 +27,7 @@
         <el-table-column
             fixed
             prop="office_name"
-            label="全部科室"
+            label="我要挂号 全部科室/医生人数"
             width="250">
           <template #default="scope">
             <span class="message-title" @click="openOffice(scope.row.office_name)">
@@ -42,7 +42,7 @@
         <el-table-column
           fixed
           prop="'appointment_list"
-          label="所有预约"
+          label="我的所有预约"
           width="250">
           <template #default="scope">
             <span class="message-title" @click="openAppointment(scope.row.id)">
@@ -106,9 +106,7 @@ export default {
   methods: {
     openOffice (officename) {
      console.log(`dash: ${officename}`);
-     this.$router.push({
-       path: '/'+ officename + '/DoctorIndex',
-     })
+     this.$router.push({name: 'DoctorIndex', params: {office: officename}})
     },
     openAppointment (id) {
       console.log(`dash: scan appointment id ${id}`);

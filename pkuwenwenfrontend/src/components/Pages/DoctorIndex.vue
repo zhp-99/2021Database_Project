@@ -1,33 +1,18 @@
 <template>
 <div>
   <div id = 'logoimg'>
-  <img alt="Vue logo" src="./logo.png" height="106" width="256">
+  <img alt="Vue logo" src="../../assets/logo2.jpeg" height="106" width="256">
   </div>
   <div id = 'text'>
-  <p> {{SchoolName}} </p>
+  <p> {{OfficeName}} </p>
   </div>
   <div class="">
-    <el-table
-    :data="CourseList"
-    style="width: 50%"
-    >
-    <el-table-column
-      fixed
-      prop="course_id"
-      label="课程号"
-      width="250">
-    </el-table-column>
-
-    <el-table-column
-      fixed
-      prop="course_name"
-      label="课程名"
-      width="250">
-      <template #default="scope">
-        <span class="message-title" @click="openCourse(scope.row.course_name)">{{scope.row.course_name}}</span>
-      </template>
-    </el-table-column>
-
+    <el-table :data="DoctorList" style="width: 50%">
+      <el-table-column fixed prop="course_name" label="医师名" width="250">
+        <template #default="scope">
+          <span class="message-title" @click="openDoctor(scope.row.realName)">{{scope.row.realName}}</span>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </div>
@@ -38,19 +23,19 @@ export default {
   name: 'tabs',
   data() {
     return {
-      SchoolName: this.$route.params.school,
+      OfficeName: this.$route.params.office,
       message: 'first',
       showHeader: false,
-      CourseList: Array(),
+      DoctorList: Array(),
     }
   },
 
   mounted(){
     var post_request = new FormData()
-    post_request.append('schoolname', this.$route.params.school)
+    post_request.append('officeName', this.$route.params.office)
     this.$http
     .request({
-      url: this.$url + '/getCourseIndex',
+      url: this.$url + '/office/info',
       method: 'post',
       data: post_request,
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -58,15 +43,15 @@ export default {
     .then((response) =>{
       //console.log('get return data')
       console.log(response)
-      this.CourseList = response.data.courselist
+      this.DoctorList = response.data.DoctorList
     })
   },
 
   methods: {
-    openCourse (coursename) {
-       console.log(`dash: ${coursename}`);
+    openDoctor (dName) {
+       console.log(`dash: scan ${dName}`);
        this.$router.push({
-         path: '/' + this.$route.params.school + '/' + coursename + '/QuestionIndex',
+         path: '/' + this.$route.params.office + '/' + dName + '/ReservationCalendar',
        })
     }
   },
