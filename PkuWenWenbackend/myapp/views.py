@@ -161,6 +161,8 @@ def login(request):
             print("密码错误")
     return JsonResponse({'login': res})
     # return HttpResponse(json.dumps({'login': res}))
+
+
 @csrf_exempt
 def getOfficeIndex(request):
     retdata = {}
@@ -168,8 +170,8 @@ def getOfficeIndex(request):
     office_list = list(offices)
     res_list = list()
     for office in office_list:
-        doctor_num = len(models.Office.objects.raw('SELECT * FROM myapp_work WHERE office_name = %s', [office['office_name']]))
-        res_list.append({'office_name': office['office_name'], 'doctor_num': doctor_num})
+        doctor_num = len(models.Office.objects.raw('SELECT * FROM myapp_work WHERE office_name = %s', [office['name']]))
+        res_list.append({'office_name': office['name'], 'doctor_num': doctor_num})
     retdata['Officelist'] = res_list
     return JsonResponse(retdata)
 
