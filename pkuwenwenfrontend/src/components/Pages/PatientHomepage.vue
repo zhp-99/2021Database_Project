@@ -7,19 +7,19 @@
   <p> Patient Homepage </p>
   </div>
   <el-row>
-    <el-col :span="12"><div class="grid-content bg-purple">{{realName}}</div></el-col>
+    <el-col :span="12"><div class="grid-content bg-purple">真实姓名：{{realName}}</div></el-col>
     <el-col :span="12"><div class="grid-content bg-purple-light">患者ID：{{patientID}}</div></el-col>
   </el-row>
   <el-row>
-    <el-col :span="6"><div class="grid-content bg-purple">{{userName}}</div></el-col>
+    <el-col :span="6"><div class="grid-content bg-purple">用户名：{{userName}}</div></el-col>
     <el-col :span="6"><div class="grid-content bg-purple-light">{{gender}}</div></el-col>
-    <el-col :span="12"><div class="grid-content bg-purple">{{idCardNumber}}</div></el-col>
+    <el-col :span="12"><div class="grid-content bg-purple">身份证号：{{idCardNumber}}</div></el-col>
   </el-row>
   <el-row>
-    <el-col :span="6"><div class="grid-content bg-purple-light">{{phoneNumber}}</div></el-col>
-    <el-col :span="6"><div class="grid-content bg-purple">{{email}}</div></el-col>
-    <el-col :span="6"><div class="grid-content bg-purple-light">{{birthday}}</div></el-col>
-    <el-col :span="6"><div class="grid-content bg-purple">当前预约数{{appointmentNumber}}</div></el-col>
+    <el-col :span="6"><div class="grid-content bg-purple-light">电话号码：{{phoneNumber}}</div></el-col>
+    <el-col :span="6"><div class="grid-content bg-purple">邮箱：{{email}}</div></el-col>
+    <el-col :span="6"><div class="grid-content bg-purple-light">出生日期：{{birthday}}</div></el-col>
+    <el-col :span="6"><div class="grid-content bg-purple">当前预约数：{{appointmentNumber}}</div></el-col>
   </el-row>
   <div class="">
     <el-table :data="OfficeList" style="width: 30%">
