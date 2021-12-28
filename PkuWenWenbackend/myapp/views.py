@@ -197,7 +197,7 @@ def patient_homepage_info(request):
 def office_info(request):
     res = {'retCode': -1, 'message': ''}
     officeName = request.POST.get('officeName', 'officename')
-    res = function.get_doctor_index(officeName)
+    res.update(function.get_doctor_index(officeName))
     return JsonResponse(res)
 
 

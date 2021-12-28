@@ -37,7 +37,7 @@ class Doctor(models.Model):
     college = models.CharField(max_length=32, default='Peking')
     degree = models.CharField(max_length=32, default='Peking')
 
-    office = models.ForeignKey('Office',on_delete=models.CASCADE,null=True)
+    office = models.CharField(max_length=32,default='x')
     is_leader = models.BooleanField()
 
 

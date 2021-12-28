@@ -62,7 +62,8 @@ def get_doctor_index(office):
     for doc in doctor_list:
         doc_dict = model_to_dict(doc)
         res_list.append(doc_dict)
-    res = {'retCode': 1, 'DoctorList': res_list}
+    res = {'DoctorList': res_list}
+    return res
 
 
 def patient_appointments(userName):
