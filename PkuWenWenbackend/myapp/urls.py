@@ -19,7 +19,7 @@ urlpatterns = [
     path('patient/mrs',views.patient_mrs),
     path('patient/mrs/byDate',views.patient_mrs_by_date),
 
-    path('office/register',views.office_register)
+    path('office/register',views.office_register),
 
     path('register', views.register),
     path('login', views.login),
