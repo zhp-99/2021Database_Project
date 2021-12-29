@@ -55,37 +55,22 @@
       </el-table>
     </el-col>
 
-    <el-col :span="6">
-      <el-table :data="AppointmentList" style="width: 80%">
+    <el-col :span="12">
+      <el-table :data="MedicalRecordList" style="width: 80%">
         <el-table-column
             fixed
             prop="'appointment_list"
             label="我的病例处方"
-            width="250">
+            width="500">
           <template #default="scope">
-            <span class="message-title" @click="openAppointment(scope.row.id)">
-              {{scope.row.dRealName}} {{scope.row.pRealName}} {{scope.row.date}}
+            <span class="message-title" @click="openMedicalRecord(scope.row.prescription)">
+              {{scope.row.description}} {{scope.row.date}} 主治医生：{{scope.row.dRealName}}
             </span>
           </template>
         </el-table-column>
       </el-table>
     </el-col>
 
-    <el-col :span="6">
-      <el-table :data="AppointmentList" style="width: 80%">
-        <el-table-column
-            fixed
-            prop="'appointment_list"
-            label="我的缴费情况"
-            width="250">
-          <template #default="scope">
-            <span class="message-title" @click="openAppointment(scope.row.id)">
-              {{scope.row.dRealName}} {{scope.row.pRealName}} {{scope.row.date}}
-            </span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-col>
   </el-row>
 </div>
 </template>
@@ -99,6 +84,7 @@ export default {
       showHeader: false,
       OfficeList: Array(),
       AppointmentList: Array(),
+      MedicalRecordList: Array(),
       realName: '真实姓名',
       patientID: '患者编号',
       userName: '登录名',
@@ -134,6 +120,7 @@ export default {
       this.appointmentNumber = response.data.appointmentNumber
       this.OfficeList = response.data.OfficeList
       this.AppointmentList = response.data.AppointmentList
+      this.MedicalRecordList = response.data.MedicalRecordList
     })
   },
 
@@ -148,6 +135,12 @@ export default {
       console.log(`dash: scan appointment id ${id}`);
       this.$router.push({
         path: '/' + id + '/AppointmentDetail',
+      })
+    },
+    openMedicalRecord (id) {
+      console.log(`dash: scan medical record id ${id}`);
+      this.$router.push({
+        path: '/' + id + '/MedicalRecordDetail',
       })
     },
   },

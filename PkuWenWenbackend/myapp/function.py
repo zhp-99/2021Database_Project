@@ -124,3 +124,32 @@ def appointments_by_doctor_date(userName, date):
         res_list.append(app_dict)
     return res_list
 
+
+def patient_medical_records(userName):
+    mr_list = models.MedicalRecord.objects.filter(pName=userName)
+    res_list = []
+    for mr in mr_list:
+        mr_dict = model_to_dict(mr)
+        dName = mr.dName
+        pName = mr.pName
+        mr_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        mr_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        mr_dict['date'] = str(mr_dict['date'])
+        res_list.append(mr_dict)
+    res = {'MedicalRecordList': res_list}
+    return res
+
+
+def prescription_info(pid):
+    prescription = models.Prescription.objects.filter(id=pid)
+    p_dict = model_to_dict(prescription[0])
+    arr = list()
+    arr.append(p_dict)
+    res = {'prescription': arr}
+    return res
+    # [{'id': 1,
+    #  'pName': 'Dee_Why',
+    #  'dName': '张大夫',
+    #  'date': datetime.date(2021, 12, 28),
+    #  'medical': '牛黄解毒片'}]
+

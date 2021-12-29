@@ -21,16 +21,13 @@ from datetime import date, datetime, timedelta
 @csrf_exempt
 def patient_register(request):
     userName = request.POST.get('userName', 'username')
+    realName = request.POST.get('realName', 'xxx')
     password = request.POST.get('password', 'xxx')
     email = request.POST.get('email', '未注册')
-
-    realName = request.POST.get('realName','xxx')
     phoneNumber = request.POST.get('phoneNumber','xxx')
     idCardNumber = request.POST.get('idCardNumber','xxx')
     gender = request.POST.get('gender','x')
     birthday = dateutil.parser.parse(request.POST.get('birthday','2000-01-01'))
-
-
 
     res = {'retCode': 0, 'message': ''}
 
@@ -38,8 +35,8 @@ def patient_register(request):
     if obj.count() == 0:
 
         models.Patient.objects.create(
-            userName=userName, password=password,email=email,realName=realName,
-            gender=gender,birthday=birthday,idCardNumber=idCardNumber,phoneNumber=phoneNumber
+            userName=userName, password=password, email=email, realName=realName,
+            gender=gender, birthday=birthday, idCardNumber=idCardNumber, phoneNumber=phoneNumber
         )
         obj = models.Patient.objects.get(userName=userName)
         # obj.collectList.remove('-1')
@@ -190,6 +187,7 @@ def patient_homepage_info(request):
     res.update(function.patient_appointment_count(userName))
     res.update(function.patient_appointments(userName))
     res.update(function.get_office_index())
+    res.update(function.patient_medical_records(userName))
     print(res)
     return JsonResponse(res)
 
@@ -201,6 +199,15 @@ def doctor_homepage_info(request):
     res.update(function.patient_appointments(userName))
     res.update(function.get_office_index())
     print(res)
+    return JsonResponse(res)
+
+
+@csrf_exempt
+def medical_record_detail_info(request):
+    pid = request.POST.get('id', 'id')
+    res = {'retCode': -1, 'message': ''}
+    res.update(function.prescription_info(pid))
+    print('response is', res)
     return JsonResponse(res)
 
 
