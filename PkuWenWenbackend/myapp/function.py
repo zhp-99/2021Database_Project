@@ -37,6 +37,37 @@ def patient_info(userName):
         print('查询成功')
     return res
 
+def doctor_info(userName):
+    obj = models.Doctor.objects.filter(userName=userName)
+    res = {'retCode': -1, 'message': ''}
+    if obj.count() == 0:
+        res['retCode'] = 0
+        res['message'] = '用户不存在'
+        print('用户不存在')
+    else:
+        obj = models.Doctor.objects.get(userName=userName)
+
+        res['retCode'] = 1
+        res['message'] = '查询成功'
+        res['realName'] = obj.realName
+        res['doctorID'] = obj.id
+        res['birthday'] = obj.birthday
+        res['gender'] = obj.gender
+        res['idCardNumber'] = obj.idCardNumber
+        res['phoneNumber'] = obj.phoneNumber
+        res['email'] = obj.email
+        res['userName'] = obj.userName
+        res['college'] = obj.college
+        res['degree'] = obj.degree
+        res['FieldName'] = obj.FieldName
+        res['Specialty'] = obj.Specialty
+        res['office'] = obj.office
+        res['officeLeaderName'] = obj.officeLeaderName
+        res['LeaderphoneNumber'] = obj.LeaderphoneNumber
+
+        print('查询成功')
+    return res
+
 
 def patient_appointment_count(userName):
     app_list = models.Appointment.objects.filter(pName=userName)

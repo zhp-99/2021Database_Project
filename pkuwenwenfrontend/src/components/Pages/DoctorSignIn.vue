@@ -59,6 +59,7 @@ export default {
       var post_request = new FormData()
       post_request.append('userName', this.param.username)
       post_request.append('password', this.param.password)
+      post_request.append('type', 'doctor')
       //let _this = this;
       this.$http
           .request({
@@ -73,30 +74,14 @@ export default {
             // eslint-disable-next-line no-constant-condition
             if(response.data.login.retCode == 1){
               alert('登陆成功');
-              /*
-              this.$message({
-                  showClose: true,
-                  message:'登录成功'
-              })
-              */
               localStorage.setItem("ms_username", this.param.username)
-              this.$router.push('/OfficeIndex');
+              this.$router.push('/DoctorHomepage');
             }
             else if(response.data.login.retCode == 2) {
-              /*_this.$message({
-                  message: response.data.login.message,
-                  type: 'error',
-              });
-              */
               alert('密码错误！');
               return false
             }
             else {
-              /*
-              _this.$message({
-                  message: response.data.login.message + "！请先注册",
-                  type: 'warning',
-              });*/
               alert('用户不存在，请先注册！');
               return false
             }

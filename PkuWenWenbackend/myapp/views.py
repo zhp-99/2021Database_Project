@@ -193,6 +193,16 @@ def patient_homepage_info(request):
     print(res)
     return JsonResponse(res)
 
+@csrf_exempt
+def doctor_homepage_info(request):
+    userName = request.POST.get('userName', 'username')
+    res = function.doctor_info(userName)
+    res.update(function.patient_appointment_count(userName))
+    res.update(function.patient_appointments(userName))
+    res.update(function.get_office_index())
+    print(res)
+    return JsonResponse(res)
+
 
 @csrf_exempt
 def office_info(request):

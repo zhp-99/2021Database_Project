@@ -40,6 +40,9 @@ class Doctor(models.Model):
     office = models.CharField(max_length=32,default='x')
     is_leader = models.BooleanField()
 
+    # FieldName = models.CharField(max_length=32, default='none')  # 技术职称
+    # Specialty = models.CharField(max_length=32, default='none')  # 专业特长
+
     def __str__(self):
         return self.userName + ' ' + self.office
 
