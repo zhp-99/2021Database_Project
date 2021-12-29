@@ -93,3 +93,18 @@ def appointments_by_doctor_date(userName, date):
         res_list.append(app_dict)
     return res_list
 
+
+def patient_medical_records(userName):
+    mr_list = models.MedicalRecord.objects.filter(pName=userName)
+    res_list = []
+    for mr in mr_list:
+        mr_dict = model_to_dict(mr)
+        dName = mr.dName
+        pName = mr.pName
+        mr_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        mr_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        mr_dict['date'] = str(mr_dict['date'])
+        res_list.append(mr_dict)
+    res = {'MedicalRecordList': res_list}
+    return res
+

@@ -56,7 +56,7 @@
     </el-col>
 
     <el-col :span="6">
-      <el-table :data="AppointmentList" style="width: 80%">
+      <el-table :data="MedicalRecordList" style="width: 80%">
         <el-table-column
             fixed
             prop="'appointment_list"
@@ -99,6 +99,7 @@ export default {
       showHeader: false,
       OfficeList: Array(),
       AppointmentList: Array(),
+      MedicalRecordList: Array(),
       realName: '真实姓名',
       patientID: '患者编号',
       userName: '登录名',
@@ -134,6 +135,7 @@ export default {
       this.appointmentNumber = response.data.appointmentNumber
       this.OfficeList = response.data.OfficeList
       this.AppointmentList = response.data.AppointmentList
+      this.MedicalRecordList = response.data.MedicalRecordList
     })
   },
 

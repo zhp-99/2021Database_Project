@@ -190,6 +190,7 @@ def patient_homepage_info(request):
     res.update(function.patient_appointment_count(userName))
     res.update(function.patient_appointments(userName))
     res.update(function.get_office_index())
+    res.update(function.patient_medical_records(userName))
     print(res)
     return JsonResponse(res)
 
