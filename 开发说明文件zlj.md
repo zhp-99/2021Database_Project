@@ -15,3 +15,10 @@
 在element plus的表项中加入跳转连接的方法（具体见SchoolIndex页，scope；还有就是element ui里面表格的设计）
 
 # dynamic route matching
+
+
+
+
+
+## test push
+
