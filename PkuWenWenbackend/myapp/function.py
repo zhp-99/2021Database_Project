@@ -50,7 +50,7 @@ def get_office_index():
     office_list = list(offices)
     res_list = list()
     for office in office_list:
-        doctor_num = len(models.Office.objects.raw('SELECT * FROM myapp_work WHERE office_name = %s', [office['name']]))
+        doctor_num = len(models.Office.objects.raw('SELECT * FROM myapp_doctor WHERE office = %s', [office['name']]))
         res_list.append({'office_name': office['name'], 'doctor_num': doctor_num})
     retdata['OfficeList'] = res_list
     return retdata

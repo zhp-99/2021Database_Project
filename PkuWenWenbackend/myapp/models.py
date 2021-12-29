@@ -40,6 +40,9 @@ class Doctor(models.Model):
     office = models.CharField(max_length=32,default='x')
     is_leader = models.BooleanField()
 
+    def __str__(self):
+        return self.userName + ' ' + self.office
+
 
 # 预约表
 class Appointment(models.Model):
