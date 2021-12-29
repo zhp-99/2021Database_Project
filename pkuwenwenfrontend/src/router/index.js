@@ -38,6 +38,11 @@ const routes = [
         component: () => import('../components/Pages/AppointmentDetail')
     },
     {
+        path: '/:id/MedicalRecordDetail/',
+        name: 'MedicalRecord',
+        component: () => import('../components/Pages/MedicalRecordDetail')
+    },
+    {
         path: '/:office/DoctorIndex', //使用动态链接，office是院系名
         name: 'DoctorIndex',
         component: () => import('../components/Pages/DoctorIndex.vue')

@@ -196,6 +196,15 @@ def patient_homepage_info(request):
 
 
 @csrf_exempt
+def medical_record_detail_info(request):
+    pid = request.POST.get('id', 'id')
+    res = {'retCode': -1, 'message': ''}
+    res.update(function.prescription_info(pid))
+    print('response is', res)
+    return JsonResponse(res)
+
+
+@csrf_exempt
 def office_info(request):
     res = {'retCode': -1, 'message': ''}
     officeName = request.POST.get('officeName', 'officename')

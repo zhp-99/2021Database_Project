@@ -8,6 +8,7 @@ urlpatterns = [
     path('office/info', views.office_info),
     path('reservation/calendar', views.reservation_calendar_info),
     path('patient/makeAppointment', views.make_appointment),
+    path('medical/record/detail/info', views.medical_record_detail_info),
     # zhp api
     path('doctor/register',views.docter_register),
     path('doctor/info', views.doctor_info),

@@ -64,6 +64,7 @@ class MedicalRecord(models.Model):
     pName = models.CharField(max_length=32)
     dName = models.CharField(max_length=32)
     date = models.DateField()
+    description = models.CharField(max_length=32, default='有点小病')
     prescription = models.ForeignKey('Prescription', on_delete=models.CASCADE)
 
 

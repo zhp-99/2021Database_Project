@@ -108,3 +108,17 @@ def patient_medical_records(userName):
     res = {'MedicalRecordList': res_list}
     return res
 
+
+def prescription_info(pid):
+    prescription = models.Prescription.objects.filter(id=pid)
+    p_dict = model_to_dict(prescription[0])
+    arr = list()
+    arr.append(p_dict)
+    res = {'prescription': arr}
+    return res
+    # [{'id': 1,
+    #  'pName': 'Dee_Why',
+    #  'dName': '张大夫',
+    #  'date': datetime.date(2021, 12, 28),
+    #  'medical': '牛黄解毒片'}]
+
