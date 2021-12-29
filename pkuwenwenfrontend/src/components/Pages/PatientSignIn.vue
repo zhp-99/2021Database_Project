@@ -75,7 +75,7 @@ export default {
               if(response.data.login.retCode == 1){
                 alert('登陆成功');
                 localStorage.setItem("ms_username", this.param.username)
-                this.$router.push('/PatientHomepage');
+                this.$router.push('/FeverOrNot');
               }
               else if(response.data.login.retCode == 2) {
                alert('密码错误！');

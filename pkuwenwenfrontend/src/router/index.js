@@ -28,6 +28,11 @@ const routes = [
         component: () => import('../components/Pages/DoctorSignIn.vue')
     },
     {
+        path: '/FeverOrNot',
+        name: 'FeverOrNot',
+        component: () => import('../components/Pages/FeverOrNot')
+    },
+    {
         path: '/PatientHomepage',
         name: 'PatientHomepage',
         component: () => import('../components/Pages/PatientHomepage.vue')
