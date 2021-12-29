@@ -1,51 +1,31 @@
 <template>
 <div>
   <div id = 'logoimg'>
-  <img alt="Vue logo" src="./logo.png" height="106" width="256">
+    <img alt="Vue logo" src="../../assets/logo2.jpeg" height="106" width="256">
   </div>
   <div id = 'text'>
-  <p> {{SchoolName}} </p>
-  <p> {{CourseName}} </p>
+    <p> {{office}} </p>
+    <p> {{userName}} </p>
   </div>
-  <el-container class="higher-part">
-    <el-table
-    :data="QuestionList"
-    style="width: 100%"
-    >
 
-    <el-table-column
-      fixed
-      prop="course_name"
-      label="问题标题"
-      width="800">
-      <template #default="scope">
-        <span class="message-title" @click="openQuestion(scope.row.id)">{{scope.row.title}}</span>
-      </template>
-    </el-table-column>
-    
-    </el-table>
-  </el-container>
+  <el-row :gutter="20">
+    <el-col :span="12">
+      <el-table :data="CalendarList" style="width: 80%">
+        <el-table-column
+            fixed
+            prop="reservation_date"
+            label="日期/剩余号数"
+            width="250">
+          <template #default="scope">
+            <span class="message-title" @click="makeReservation(this.userName, scope.row.date)">
+              {{scope.row.date}}  {{scope.row.reserve}}
+            </span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
 
-  <el-container class="lower-part">
-    <div class="form-box">
-      <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="问题标题">
-          <el-input 
-            placeholder="输入问题标题，限制40字以内"
-            v-model="inputdata.title"></el-input>
-        </el-form-item>
-
-        <el-form-item label="问题描述">
-          <el-input type="textarea" :rows="10" 
-            placeholder="输入问题描述，限制1000字以内（语言尽量简洁即可）"
-            v-model="inputdata.content"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitQuestion">提问</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-  </el-container>
 </div>
 </template>
 
@@ -54,13 +34,13 @@ export default {
   name: 'tabs',
   data() {
     return {
-      CourseName: this.$route.params.course,
-      SchoolName: this.$route.params.school,
+      office: this.$route.params.office,
+      userName: this.$route.params.userName,
       inputdata: {
         title: '',
         content:'',
       },
-      QuestionList: Array(),
+      CalendarList: Array(),
     /*
       form: {
         title: '默认标题',
@@ -76,18 +56,19 @@ export default {
   },
   mounted(){
     var post_request = new FormData()
-    post_request.append('coursename', this.$route.params.course)
+    // 注意这里的userName是医生的，不是当前正在进行操作的患者
+    post_request.append('userName', this.$route.params.userName)
     this.$http
     .request({
-      url: this.$url + '/getQuestionIndex',
+      url: this.$url + '/reservation/calendar',
       method: 'post',
       data: post_request,
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     .then((response) =>{
       //console.log('get return data')
-      console.log(response)    
-      this.QuestionList = response.data.questionlist
+      console.log(response)
+      this.CalendarList = response.data.CalendarList
     })
   },
 
@@ -126,7 +107,7 @@ export default {
           })
     }
 
-    
+
   }
 
 }

@@ -38,15 +38,14 @@ const routes = [
         component: () => import('../components/Pages/AppointmentDetail')
     },
     {
-        path: '/DoctorIndex', //使用动态链接，office是院系名
+        path: '/:office/DoctorIndex', //使用动态链接，office是院系名
         name: 'DoctorIndex',
         component: () => import('../components/Pages/DoctorIndex.vue')
     },
     {
-        path: '/:school/:course/QuestionIndex',
-        //path: '/Questions',
-        name: 'QuestionIndex',
-        component: () => import('../components/Pages/QuestionIndex.vue')
+        path: '/:office/:userName/ReservationCalendar',
+        name: 'ReservationCalendar',
+        component: () => import('../components/Pages/ReservationCalendar.vue')
     },
     {
         path: '/Question/:id',

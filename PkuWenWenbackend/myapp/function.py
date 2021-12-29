@@ -79,3 +79,17 @@ def patient_appointments(userName):
         res_list.append(app_dict)
     res = {'retCode': 1, 'AppointmentList': res_list}
     return res
+
+
+def appointments_by_doctor_date(userName, date):
+    app_list = models.Appointment.objects.filter(dName=userName,date=date)
+    res_list = []
+    for app in app_list:
+        app_dict = model_to_dict(app)
+        dName = app.dName
+        pName = app.pName
+        app_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        app_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        res_list.append(app_dict)
+    return res_list
+

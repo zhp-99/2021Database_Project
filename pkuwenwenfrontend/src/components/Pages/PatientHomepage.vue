@@ -106,7 +106,9 @@ export default {
   methods: {
     openOffice (officename) {
      console.log(`dash: ${officename}`);
-     this.$router.push({name: 'DoctorIndex', params: {office: officename}})
+     this.$router.push({
+       path: '/' + officename + '/DoctorIndex',
+     })
     },
     openAppointment (id) {
       console.log(`dash: scan appointment id ${id}`);

@@ -14,6 +14,7 @@ import re
 import random
 import json
 import dateutil.parser
+from datetime import date, datetime, timedelta
 
 # Create your views here.
 
@@ -198,6 +199,20 @@ def office_info(request):
     res = {'retCode': -1, 'message': ''}
     officeName = request.POST.get('officeName', 'officename')
     res.update(function.get_doctor_index(officeName))
+    return JsonResponse(res)
+
+
+@csrf_exempt
+def reservation_calendar_info(request):
+    userName = request.POST.get('userName', 'username')
+    res = {'retCode': -1, 'message': ''}
+    dateAndReservation = list()
+    today = date.today()
+    for i in range(31):
+        dic = {'date': str(today), 'reserve': 30-len(function.appointments_by_doctor_date(userName, today))}
+        dateAndReservation.append(dic)
+        today += timedelta(days=1)
+    res['CalendarList'] = dateAndReservation
     return JsonResponse(res)
 
 

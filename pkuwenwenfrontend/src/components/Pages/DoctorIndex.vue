@@ -10,7 +10,7 @@
     <el-table :data="DoctorList" style="width: 50%">
       <el-table-column fixed prop="course_name" label="医师名" width="250">
         <template #default="scope">
-          <span class="message-title" @click="openDoctor(scope.row.realName)">{{scope.row.realName}}</span>
+          <span class="message-title" @click="openDoctor(scope.row.userName)">{{scope.row.realName}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -48,10 +48,10 @@ export default {
   },
 
   methods: {
-    openDoctor (dName) {
-       console.log(`dash: scan ${dName}`);
+    openDoctor (userName) {
+       console.log(`dash: scan ${userName}`);
        this.$router.push({
-         path: '/' + this.$route.params.office + '/' + dName + '/ReservationCalendar',
+         path: '/' + this.$route.params.office + '/' + userName + '/ReservationCalendar',
        })
     }
   },
