@@ -13,6 +13,7 @@ import re
 import random
 import json
 import dateutil.parser
+from datetime import date, datetime, timedelta
 
 def patient_info(userName):
     obj = models.Patient.objects.filter(userName=userName)
@@ -59,11 +60,12 @@ def doctor_info(userName):
         res['userName'] = obj.userName
         res['college'] = obj.college
         res['degree'] = obj.degree
-        res['FieldName'] = obj.FieldName
-        res['Specialty'] = obj.Specialty
+        # res['FieldName'] = obj.FieldName
+        # res['Specialty'] = obj.Specialty
         res['office'] = obj.office
-        res['officeLeaderName'] = obj.officeLeaderName
-        res['LeaderphoneNumber'] = obj.LeaderphoneNumber
+        ke_zhang_dict = model_to_dict(models.Doctor.objects.get(office=obj.office, is_leader=True))
+        res['officeLeaderName'] = ke_zhang_dict['realName']
+        res['LeaderphoneNumber'] = ke_zhang_dict['phoneNumber']
 
         print('查询成功')
     return res
@@ -105,6 +107,59 @@ def get_doctor_index(office):
         res_list.append(doc_dict)
     res = {'DoctorList': res_list}
     return res
+
+
+def today_appointment_list(userName):
+    """
+    :param userName: string
+    :return: res = {'AppointmentList': appointment_list}
+    """
+    appointment_list = list()
+    today = date.today()
+    appointments = models.Appointment.objects.filter(dName=userName, date=today)
+    for appointment in appointments:
+        app_dic = model_to_dict(appointment)
+        app_dic['date'] = str(app_dic['date'])
+        app_dic['pRealName'] = models.Patient.objects.get(userName=app_dic['pName']).realName
+        appointment_list.append(app_dic)
+    res = {'AppointmentList': appointment_list}
+    return res
+
+
+def history_patient_list(userName):
+    """
+    :param userName: string
+    :return: res = {'patient_list': patient_list}
+    """
+    patient_list = list()
+    unique_list = list() # 仅仅为了确保不要插入重复的患者名，我拙劣的python技巧导致我这么写了
+    appointments = models.Appointment.objects.filter(dName=userName)
+    for appointment in appointments:
+        app_dic = model_to_dict(appointment)
+        pName = app_dic['pName']
+        if pName not in unique_list:
+            unique_list.append(pName)
+            patient_list.append({'pName': pName, 'pRealName': models.Patient.objects.get(userName=pName).realName})
+    res = {'PatientList': patient_list}
+    return res
+
+
+
+def doctor_appointments_by_date(request):
+    userName = request.POST.get('userName')
+    date = request.POST.get('date')
+    app_list = models.Appointment.objects.filter(dName=userName,date=date)
+    res_list = []
+    for app in app_list:
+        app_dict = model_to_dict(app)
+        dName = app.dName
+        pName = app.pName
+        app_dict['dRealName'] = models.Doctor.objects.get(userName=dName).realName
+        app_dict['pRealName'] = models.Patient.objects.get(userName=pName).realName
+        res_list.append(app_dict)
+    res = {'retCode': 1}
+    res['appList'] = res_list
+    return JsonResponse(res)
 
 
 def patient_appointments(userName):

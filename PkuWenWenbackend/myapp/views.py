@@ -199,8 +199,8 @@ def patient_homepage_info(request):
 def doctor_homepage_info(request):
     userName = request.POST.get('userName', 'username')
     res = function.doctor_info(userName)
-    res.update(function.get_TodaysPatientList(userName))
-    res.update(function.get_historyPatientList())
+    res.update(function.today_appointment_list(userName))
+    res.update(function.history_patient_list(userName))
     print(res)
     return JsonResponse(res)
 

@@ -34,15 +34,15 @@
   <el-row :gutter="20">
 
     <el-col :span="6">
-      <el-table :data="TodayReservedPatientList" style="width: 80%">
+      <el-table :data="TodayAppointmentList" style="width: 80%">
         <el-table-column
             fixed
             prop="office_name"
             label="今日预约患者: 编号: 姓名"
             width="250">
           <template #default="scope">
-            <span class="message-title" @click="openPatientInfo(scope.row.patientRealName)">
-              {{scope.row.patientID}}  {{scope.row.patientRealName}}
+            <span class="message-title" @click="openPatientInfo(scope.row.pName)">
+              {{scope.row.id}}  {{scope.row.pRealName}}
             </span>
           </template>
         </el-table-column>
@@ -57,8 +57,8 @@
           label="历史治疗患者 病例编号；患者姓名"
           width="250">
           <template #default="scope">
-            <span class="message-title" @click="openHistoryPatient(scope.row.patientRealName)">
-              {{scope.row.patientID}} {{scope.row.patientRealName}}
+            <span class="message-title" @click="openHistoryPatient(scope.row.pName)">
+              {{scope.row.pRealName}}
             </span>
           </template>
         </el-table-column>
@@ -66,7 +66,7 @@
     </el-col>
 
 
-  
+
   </el-row>
 </div>
 </template>
@@ -78,7 +78,7 @@ export default {
     return {
       message: 'first',
       showHeader: false,
-      OfficeTodayReservedPatientListList: Array(),
+      TodayAppointmentList: Array(),
       HistoryPatientList: Array(),
       realName: '真实姓名',
       DoctorID: '医生编号',
@@ -125,6 +125,8 @@ export default {
       this.office = response.data.office
       this.officeLeaderName = response.data.officeLeaderName
       this.LeaderphoneNumber = response.data.LeaderphoneNumber
+      this.TodayAppointmentList = response.data.AppointmentList
+      this.HistoryPatientList = response.data.PatientList
     })
   },
 
