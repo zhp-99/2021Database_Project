@@ -99,6 +99,7 @@ export default {
   mounted(){
     var post_request = new FormData()
     post_request.append('userName', localStorage.getItem('ms_username'))
+    post_request.append('patientCondition', localStorage.getItem('patient_type')) //'fever' or 'usual'
     this.$http
     .request({
       url: this.$url + '/patient/homepage/info',
@@ -127,9 +128,14 @@ export default {
   methods: {
     openOffice (officename) {
      console.log(`dash: ${officename}`);
-     this.$router.push({
-       path: '/' + officename + '/DoctorIndex',
-     })
+     if (officename === '发热门诊' && localStorage.getItem('patient_type')==='usual'){
+       alert("如果您是发热病人，请退回上一级页面选择发热患者通道。")
+     }
+     else {
+       this.$router.push({
+         path: '/' + officename + '/DoctorIndex',
+       })
+     }
     },
     openAppointment (id) {
       console.log(`dash: scan appointment id ${id}`);

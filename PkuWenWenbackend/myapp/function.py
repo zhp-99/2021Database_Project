@@ -87,6 +87,16 @@ def get_office_index():
     return retdata
 
 
+def get_office_fever():
+    retdata = {}
+    office = model_to_dict(models.Office.objects.get(name='发热门诊'))
+    doctor_num = len(models.Office.objects.raw('SELECT * FROM myapp_doctor WHERE office = %s', [office['name']]))
+    res_list = list()
+    res_list.append({'office_name': office['name'], 'doctor_num': doctor_num})
+    retdata['OfficeList'] = res_list
+    return retdata
+
+
 def get_doctor_index(office):
     doctor_list = models.Doctor.objects.filter(office=office)
     res_list = []
