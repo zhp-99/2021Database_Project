@@ -307,23 +307,31 @@ def modify_doctor(request):
     res = {'retCode': 1, 'message': '修改成功'}
     return JsonResponse(res)
 
+
 @csrf_exempt
 def make_appointment(request):
-    patient_name = request.POST.get('pName')
-    doctor_name = request.POST.get('dName')
+    pName = request.POST.get('pName')
+    dName = request.POST.get('dName')
     date = dateutil.parser.parse(request.POST.get('date'))
-
+    print('有挂号需求', pName, dName, date)
     res = {'retCode': -1, 'message': ''}
-    #这里不知道写timezone.now()行不行，有问题之后再改
-    doc_today_apps = models.Appointment.objects.filter(dName=doctor_name,date=timezone.now())
-    if doc_today_apps.count()>30:
-        res = {'retCode': 0, 'message': '预约失败'}
+
+    patient_doc_date = models.Appointment.objects.filter(pName=pName, dName=dName, date=date)
+    if patient_doc_date.count()>0:
+        res = {'retCode': 2, 'message': '您已经挂过此号'}
         return JsonResponse(res)
     else:
-        obj = models.Appointment.objects.create(pName=patient_name,dName=doctor_name,date=date)
+        doc_today_apps = models.Appointment.objects.filter(dName=dName, date=date)
+
+    if doc_today_apps.count()>=30:
+        res = {'retCode': 3, 'message': '该日无号'}
+        return JsonResponse(res)
+    else:
+        obj = models.Appointment.objects.create(pName=pName, dName=dName, date=date)
         obj.save()
         res = {'retCode': 1, 'message': '预约成功'}
         return JsonResponse(res)
+
 
 @csrf_exempt
 def doctor_appointments(request):

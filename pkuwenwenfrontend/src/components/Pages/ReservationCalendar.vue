@@ -17,7 +17,7 @@
             label="日期/剩余号数"
             width="250">
           <template #default="scope">
-            <span class="message-title" @click="makeReservation(this.userName, scope.row.date)">
+            <span class="message-title" @click="makeReservation(scope.row.date)">
               {{scope.row.date}}  {{scope.row.reserve}}
             </span>
           </template>
@@ -41,17 +41,6 @@ export default {
         content:'',
       },
       CalendarList: Array(),
-    /*
-      form: {
-        title: '默认标题',
-        date1: '',
-        date2: '',
-        desc: '这里应该有高赞回复的内容\n而且这个输入框是可以随着内容数量的变化改变大小的\n这个部分应该从属于每一个Question各自的字段' +
-            '，但是我只是搞了排版所以让他们在这里共享了\n实际上应该在上面的read和unread的每一项里面存相应的字段\n这个可以架子搭完再微调,' +
-            '\n日后还可以上传图片，不过数据库那边不好办，一个比较简单的方法是在服务器上保存图片文件，然后把文件名存到数据库里，' +
-            '每次查完数据库得到图片名，再用python文件操作打开文件，比较繁琐咱们先不做了吧',
-      },
-    */
     }
   },
   mounted(){
@@ -80,34 +69,33 @@ export default {
        })
     },
 
-    submitQuestion(){
+    makeReservation(date){
       var post_request = new FormData()
-      post_request.append('coursename', this.$route.params.course)
-      post_request.append('publisher', localStorage.getItem('ms_username'))
-      post_request.append('title', this.inputdata.title)
-      post_request.append('content', this.inputdata.content)
+      post_request.append('pName', localStorage.getItem('ms_username'))
+      post_request.append('dName', this.userName)
+      post_request.append('date', date.toString())
       this.$http
           .request({
-            url: this.$url + '/addQuestion',
+            url: this.$url + '/patient/makeAppointment',
             method: 'post',
             data: post_request,
             headers: {'Content-Type': 'multipart/form-data'},
           })
           .then((response) => {
             console.log(response)
-            if(response.data.addQuestion.retCode === 0){
-              alert('提交问题成功！')
+            if(response.data.retCode === 1){
+              alert('预约成功！')
               location.reload() // 刷新页面
-            }else{
-              alert('error!提交问题失败！')
+            }else if(response.data.retCode === 2){
+              alert('您已经挂过此号！')
+            }else if(response.data.retCode === 3){
+              alert('error!此日期已经无号！')
             }
           })
           .catch((response) => {
               console.log(response)
           })
-    }
-
-
+    },
   }
 
 }

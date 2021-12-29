@@ -74,30 +74,14 @@ export default {
               // eslint-disable-next-line no-constant-condition
               if(response.data.login.retCode == 1){
                 alert('登陆成功');
-                /*
-                this.$message({
-                    showClose: true,
-                    message:'登录成功'
-                })
-                */
                 localStorage.setItem("ms_username", this.param.username)
                 this.$router.push('/PatientHomepage');
               }
               else if(response.data.login.retCode == 2) {
-                /*_this.$message({
-                    message: response.data.login.message,
-                    type: 'error',
-                });
-                */
                alert('密码错误！');
                 return false
               }
               else {
-                /*
-                _this.$message({
-                    message: response.data.login.message + "！请先注册",
-                    type: 'warning',
-                });*/
                 alert('用户不存在，请先注册！');
                 return false
               }
