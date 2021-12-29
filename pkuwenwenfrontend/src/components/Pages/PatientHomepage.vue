@@ -22,6 +22,7 @@
     <el-col :span="6"><div class="grid-content bg-purple">当前预约数：{{appointmentNumber}}</div></el-col>
   </el-row>
   <el-row :gutter="20">
+
     <el-col :span="6">
       <el-table :data="OfficeList" style="width: 80%">
         <el-table-column
@@ -37,6 +38,7 @@
         </el-table-column>
       </el-table>
     </el-col>
+
     <el-col :span="6">
       <el-table :data="AppointmentList" style="width: 80%">
         <el-table-column
@@ -44,6 +46,38 @@
           prop="'appointment_list"
           label="我的所有预约"
           width="250">
+          <template #default="scope">
+            <span class="message-title" @click="openAppointment(scope.row.id)">
+              {{scope.row.dRealName}} {{scope.row.pRealName}} {{scope.row.date}}
+            </span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+
+    <el-col :span="6">
+      <el-table :data="AppointmentList" style="width: 80%">
+        <el-table-column
+            fixed
+            prop="'appointment_list"
+            label="我的病例处方"
+            width="250">
+          <template #default="scope">
+            <span class="message-title" @click="openAppointment(scope.row.id)">
+              {{scope.row.dRealName}} {{scope.row.pRealName}} {{scope.row.date}}
+            </span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+
+    <el-col :span="6">
+      <el-table :data="AppointmentList" style="width: 80%">
+        <el-table-column
+            fixed
+            prop="'appointment_list"
+            label="我的缴费情况"
+            width="250">
           <template #default="scope">
             <span class="message-title" @click="openAppointment(scope.row.id)">
               {{scope.row.dRealName}} {{scope.row.pRealName}} {{scope.row.date}}
