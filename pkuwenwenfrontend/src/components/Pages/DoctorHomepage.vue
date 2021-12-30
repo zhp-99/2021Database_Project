@@ -57,7 +57,7 @@
           label="历史治疗患者 病例编号；患者姓名"
           width="250">
           <template #default="scope">
-            <span class="message-title" @click="openHistoryPatient(pName = scope.row.pName)">
+            <span class="message-title" @click="openHistoryPatient(scope.row.pName)">
               {{scope.row.pRealName}}
             </span>
           </template>
@@ -137,16 +137,10 @@ export default {
        path: '/' + id + '/AppointmentDetail',
      })
     },
-    openAppointment (id) {
-      console.log(`dash: scan appointment id ${id}`);
+    openHistoryPatient(pName){
+      console.log(`dash: scan appointment id ${pName}`);
       this.$router.push({
-        path: '/' + id + '/AppointmentDetail',
-      })
-    },
-    openHistoryPatient(pName = scope.row.pName, dName = localStorage.getItem('ms_username')){
-      console.log(`dash: scan appointment id ${id}`);
-      this.$router.push({
-        path: '/' + id + '/HistoryDetail',
+        path: '/' + pName + '/HistoryDetail',
       })
     }
   },

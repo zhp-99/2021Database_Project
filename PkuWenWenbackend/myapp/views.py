@@ -574,6 +574,30 @@ def addReply(request):
     return JsonResponse(res)
 
 @csrf_exempt
+def addMedicalRecord(request):
+    Pcontent = request.POST.get('Pcontent')
+    Mcontent = request.POST.get('Mcontent')
+    aid = request.POST.get('id')  # Appointment id
+    # 先保存prescription
+    obj = models.Appointment.objects.get(id = aid)
+    P1 = models.Prescription(pName = obj.pName, dName = obj.dName, date = obj.date, medical = Pcontent)
+    P1.save()
+
+    M1 = models.MedicalRecord(pName = obj.pName, dName = obj.dName, date = obj.date, description = Mcontent,prescription = P1)
+    M1.save()
+
+
+    res = {'retCode': 0, 'message': ''}
+    if(P1.id > 0 and M1.id > 0):
+        res['retCode'] = 0
+        res['message'] = '成功添加病历和处方'
+    else:
+        res['retCode'] = 1
+        res['message'] = '添加失败'
+    return JsonResponse(res)
+
+
+@csrf_exempt
 def getAnswerList(request):#返回answerList和当前问题的内容
     Qid = request.POST.get('question_id')
     ques =  models.Question.objects.get(id = Qid)
