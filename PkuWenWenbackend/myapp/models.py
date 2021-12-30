@@ -53,6 +53,9 @@ class Appointment(models.Model):
     dName = models.CharField(max_length=32)
     date = models.DateField()
 
+    def __str__(self):
+        return self.pName + ' ' + self.dName
+
 
 # 处方表
 class Prescription(models.Model):
