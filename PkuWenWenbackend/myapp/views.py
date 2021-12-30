@@ -206,6 +206,18 @@ def doctor_homepage_info(request):
 
 
 @csrf_exempt
+def appointment_detail_info(request):
+    id = request.POST.get('id', '1')
+    res = {'retCode': 1, 'message': ''}
+    app_dict = model_to_dict(models.Appointment.objects.get(id=id))
+    pName = app_dict['pName']
+    res.update(function.patient_info(pName))
+    res['pName'] = res['userName']
+    res['pRealName'] = res['realName']
+    return JsonResponse(res)
+
+
+@csrf_exempt
 def medical_record_detail_info(request):
     pid = request.POST.get('id', 'id')
     res = {'retCode': -1, 'message': ''}

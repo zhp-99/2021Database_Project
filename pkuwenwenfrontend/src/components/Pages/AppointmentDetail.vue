@@ -5,6 +5,19 @@
   <div id = 'text'>
     <p> Appointment Detail {{AppointmentID}} </p>
   </div>
+
+  <el-row :gutter="20">
+    <el-col :span="6">
+      患者用户名：{{pName}}
+    </el-col>
+    <el-col :span="6">
+      患者真实姓名：{{pRealName}}
+    </el-col>
+    <el-button type="primary" @click="openHistoryIndex">
+      查看过往病史
+    </el-button>
+  </el-row>
+
 </template>
 
 <script>
@@ -13,11 +26,23 @@ export default {
   data() {
     return {
       AppointmentID: this.$route.params.id,
+      pName: '',
+      pRealName: '',
     }
   },
   mounted(){
     var post_request = new FormData()
     post_request.append('id', this.$route.params.id)
+    this.$http.request({
+      url: this.$url+'/appointment/detail/info',
+      method: 'post',
+      data: post_request,
+      headers: {'Content-Type': 'multipart/form-data'},
+    })
+    .then((response) => {
+      this.pName = response.data.pName
+      this.pRealName = response.data.pRealName
+    })
   },
 
   methods: {

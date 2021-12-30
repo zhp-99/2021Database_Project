@@ -41,7 +41,7 @@
             label="今日预约患者: 编号: 姓名"
             width="250">
           <template #default="scope">
-            <span class="message-title" @click="openPatientInfo(scope.row.pName)">
+            <span class="message-title" @click="openAppointmentDetail(scope.row.id)">
               {{scope.row.id}}  {{scope.row.pRealName}}
             </span>
           </template>
@@ -131,10 +131,10 @@ export default {
   },
 
   methods: {
-    openPatientInfo (officename) {
-     console.log(`dash: ${officename}`);
+    openAppointmentDetail (id) {
+     console.log(`dash: ${id}`);
      this.$router.push({
-       path: '/' + officename + '/DoctorIndex',
+       path: '/' + id + '/AppointmentDetail',
      })
     },
     openAppointment (id) {

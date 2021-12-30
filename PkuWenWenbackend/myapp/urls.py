@@ -10,6 +10,7 @@ urlpatterns = [
     path('patient/makeAppointment', views.make_appointment),
     path('medical/record/detail/info', views.medical_record_detail_info),
     path('doctor/homepage/info', views.doctor_homepage_info),
+    path('appointment/detail/info', views.appointment_detail_info),
     # 真正有用的url绑定都在本行上面
     # 下面是鹏哥一开始盲写的内容，用于参考
     # zhp api

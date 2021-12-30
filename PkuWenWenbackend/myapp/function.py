@@ -16,6 +16,7 @@ import dateutil.parser
 from datetime import date, datetime, timedelta
 
 def patient_info(userName):
+    print('searching patient_info for ', userName)
     obj = models.Patient.objects.filter(userName=userName)
     res = {'retCode': -1, 'message': ''}
     if obj.count() == 0:
