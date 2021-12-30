@@ -214,6 +214,8 @@ def appointment_detail_info(request):
     res.update(function.patient_info(pName))
     res['pName'] = res['userName']
     res['pRealName'] = res['realName']
+    res.update(function.patient_appointments(res['pName']))
+    print(res)
     return JsonResponse(res)
 
 

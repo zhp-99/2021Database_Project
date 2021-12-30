@@ -13,11 +13,27 @@
     <el-col :span="6">
       患者真实姓名：{{pRealName}}
     </el-col>
-    <el-button type="primary" @click="openHistoryIndex">
-      查看过往病史
-    </el-button>
+
   </el-row>
 
+  <el-row :gutter="20">
+    <el-col :span="6">
+      <el-table :data="AppointmentList" style="width: 80%">
+        <el-table-column
+            fixed
+            prop="'appointment_list"
+            label="该患者的历史预约"
+            width="250">
+          <template #default="scope">
+            <span class="message-title" @click="openAppointment(scope.row.id)">
+              {{scope.row.dRealName}} {{scope.row.pRealName}} {{scope.row.date}}
+            </span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
+  
 </template>
 
 <script>
@@ -28,6 +44,7 @@ export default {
       AppointmentID: this.$route.params.id,
       pName: '',
       pRealName: '',
+      AppointmentList: Array(),
     }
   },
   mounted(){
@@ -42,6 +59,7 @@ export default {
     .then((response) => {
       this.pName = response.data.pName
       this.pRealName = response.data.pRealName
+      this.AppointmentList = response.data.AppointmentList
     })
   },
 
@@ -108,6 +126,12 @@ export default {
 .lower-part{
   margin-top: 30px;
 }
+
+.higher-part{
+  margin-bottom: 30px;
+
+}
+
 .el-container:nth-child(5) .el-aside,
 .el-container:nth-child(6) .el-aside {
   line-height: 260px;
