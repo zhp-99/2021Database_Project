@@ -17,6 +17,18 @@ import dateutil.parser
 from datetime import date, datetime, timedelta
 
 # Create your views here.
+########SQL 查询################
+def F1():
+    query = "SELECT id, pName FROM myapp_Appointment WHERE date <  GROUP BY pName ORDER BY COUNT(*) DESC, pName ASC limit 10"
+    objs = models.Appointment.objects.filter(date > datetime.date(2021,1,1))
+    result = models.Appointment.objects.raw(query)
+    for p in result:
+        print(p)
+
+
+
+
+#################################
 
 @csrf_exempt
 def patient_register(request):
