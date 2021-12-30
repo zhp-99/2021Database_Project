@@ -4,7 +4,7 @@
   <img alt="Vue logo" src="../../assets/logo2.jpeg" height="106" width="256">
   </div>
   <div id = 'text'>
-  <p> Patient Homepage </p>
+  <p> Doctor Homepage </p>
   </div>
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple">真实姓名：{{realName}}</div></el-col>
@@ -57,7 +57,7 @@
           label="历史治疗患者 病例编号；患者姓名"
           width="250">
           <template #default="scope">
-            <span class="message-title" @click="openHistoryPatient(scope.row.pName)">
+            <span class="message-title" @click="openHistoryPatient(pName = scope.row.pName)">
               {{scope.row.pRealName}}
             </span>
           </template>
@@ -143,6 +143,12 @@ export default {
         path: '/' + id + '/AppointmentDetail',
       })
     },
+    openHistoryPatient(pName = scope.row.pName, dName = localStorage.getItem('ms_username')){
+      console.log(`dash: scan appointment id ${id}`);
+      this.$router.push({
+        path: '/' + id + '/HistoryDetail',
+      })
+    }
   },
 }
 
