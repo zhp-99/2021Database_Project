@@ -19,14 +19,79 @@ from datetime import date, datetime, timedelta
 # Create your views here.
 ########SQL 查询################
 def F1():
-    query = "SELECT id, pName FROM myapp_Appointment WHERE date <  GROUP BY pName ORDER BY COUNT(*) DESC, pName ASC limit 10"
-    objs = models.Appointment.objects.filter(date > datetime.date(2021,1,1))
+    query = "SELECT id, pName FROM myapp_Appointment GROUP BY pName ORDER BY COUNT(*) DESC, pName ASC limit 10"
     result = models.Appointment.objects.raw(query)
     for p in result:
-        print(p)
+        print(p.pName)
 
+def F2():
+# 病历和处方一定是一起开的，所以只需要查一个；
+    query = "SELECT id, dName FROM myapp_Prescription GROUP BY dName ORDER BY COUNT(*) DESC limit 1"
+    result = models.Prescription.objects.raw(query)
+    for p in result:
+        obj = models.Doctor.objects.filter(userName=p.dName)
+        for x in obj:
+            obj2 = models.Prescription.objects.filter(dName=x.userName)
+            nd = obj2.count()
+            print(x.realName, x.office, nd)
+def F3():
+    # 先通过预约筛选30天内接诊的病人：
+    # 找出30天内接诊数量少于平均数量的医生（姓名，科室）
+    enddate = date.today()
+    startdate = enddate - timedelta(days = 30)
+    APP = models.Prescription.objects.filter(date__range=[startdate,enddate])
+    query = "SELECT id, dName \
+             FROM myapp_Prescription \
+             GROUP BY dName \
+             HAVING COUNT(*) < (SELECT AVG(a.cc) FROM (SELECT count(*) as cc FROM myapp_Prescription GROUP BY dName) as a) "
+    result = APP.raw(query)
+    for p in result:
+        obj = models.Doctor.objects.filter(userName=p.dName)
+        for x in obj:
+            print(x.realName, x.office)
+def F5():
+    #1.找出7天内所有prescription：
+    #2.找出prescription中总数最少的药；
+    enddate = date.today()
+    startdate = enddate - timedelta(days = 7)
+    PRES = models.Prescription.objects.filter(date__range=[startdate,enddate])
+    query = "SELECT id, medical \
+             FROM myapp_Prescription \
+             GROUP BY medical \
+             HAVING COUNT(*) <= (SELECT MIN(a.cc) FROM (SELECT count(*) as cc FROM myapp_Prescription GROUP BY medical) as a) "
+    result = PRES.raw(query)
+    for p in result:
+        print(p.medical)
 
+def F6():
+    enddate = date.today()
+    startdate = enddate - timedelta(days = 30)
+    PRES = models.Prescription.objects.filter(date__range=[startdate,enddate])
+    APP = models.Appointment.objects.filter(date__range=[startdate,enddate])
+    query1 = "SELECT id, pName, COUNT(*) as cc1  \
+              FROM myapp_Appointment \
+              GROUP BY pName"
+    query2 = "SELECT id, pName, COUNT(*) as cc2  \
+              FROM myapp_Prescription \
+              GROUP BY pName"
 
+    result1 = APP.raw(query1)
+    result2 = PRES.raw(query2)
+    
+    pigeonlist = []
+    for r in result1:
+        flag = 1
+        for l in result2:
+            if(l.pName == r.pName):
+                flag = 0
+                if(l.cc2 < r.cc1 - 2):
+                    pigeonlist.append(r.pName)
+        if(flag == 1):
+            pigeonlist.append(r.pName)
+
+    for p in pigeonlist:
+        j = models.Patient.objects.get(userName = p)
+        print(j.realName, j.idCardNumber)
 
 #################################
 
